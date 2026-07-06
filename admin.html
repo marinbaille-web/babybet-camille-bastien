@@ -10,29 +10,32 @@
 <body>
   <header class="topbar">
     <a class="logo" href="index.html">
+      <span class="ball">⚽</span>
       <span class="logo-main">BABY<span>BET</span></span>
       <span class="logo-sub">Camille & Bastien</span>
     </a>
 
     <nav>
-      <a href="index.html">Faire un pari</a>
-      <a href="paris.html">Voir les paris</a>
-      <a href="admin.html">Back-office</a>
+      <a href="index.html">Accueil</a>
+      <a href="paris.html">Les paris</a>
+      <a href="paris.html">Classement</a>
+      <a href="admin.html">Infos match</a>
+      <a class="nav-cta" href="index.html#pari">Faire mon pronostic</a>
     </nav>
   </header>
 
   <main>
-    <section class="page-hero">
-      <p class="season">Espace parents</p>
+    <section class="page-hero dark-page">
+      <p class="season dark">Espace parents</p>
       <h1>Back-office BabyBet</h1>
       <p>
-        Camille et Bastien peuvent valider le résultat du reveal en premier,
+        Ici, Camille et Bastien peuvent valider le résultat du reveal en premier,
         puis compléter les résultats finaux à la naissance.
       </p>
     </section>
 
     <section class="results-grid">
-      <form id="gender-result-form" class="panel">
+      <form id="gender-result-form" class="panel admin-panel">
         <p class="eyebrow">Étape 1</p>
         <h2>Valider le sexe</h2>
         <p class="small-text">
@@ -49,21 +52,31 @@
         />
 
         <label for="genderResult">Résultat officiel</label>
-        <select id="genderResult" name="genderResult" required>
-          <option value="">Choisir</option>
-          <option>Garçon</option>
-          <option>Fille</option>
-          <option>Non binaire</option>
-        </select>
+        <div class="admin-options">
+          <label class="mini-odd">
+            <input type="radio" name="genderResult" value="Garçon" required />
+            <span>Garçon</span>
+          </label>
 
-        <button class="button button-primary full-width" type="submit">
+          <label class="mini-odd">
+            <input type="radio" name="genderResult" value="Fille" required />
+            <span>Fille</span>
+          </label>
+
+          <label class="mini-odd">
+            <input type="radio" name="genderResult" value="Non binaire" required />
+            <span>Non binaire</span>
+          </label>
+        </div>
+
+        <button class="button button-main full-width" type="submit">
           Valider le résultat du reveal
         </button>
 
         <p id="gender-admin-message" class="message"></p>
       </form>
 
-      <form id="final-results-form" class="panel">
+      <form id="final-results-form" class="panel admin-panel">
         <p class="eyebrow">Étape 2</p>
         <h2>Valider la naissance</h2>
         <p class="small-text">
@@ -79,57 +92,108 @@
           required
         />
 
-        <div class="fields-grid">
-          <div>
-            <label for="birthDateResult">Date officielle</label>
-            <input type="date" id="birthDateResult" name="birthDateResult" />
-          </div>
+        <div class="admin-market">
+          <h3>Date de naissance</h3>
+          <div class="admin-options">
+            <label class="mini-odd">
+              <input type="radio" name="birthDateResult" value="Avant terme" />
+              <span>Avant terme</span>
+            </label>
 
-          <div>
-            <label for="birthTimeResult">Heure officielle</label>
-            <input type="time" id="birthTimeResult" name="birthTimeResult" />
-          </div>
+            <label class="mini-odd">
+              <input type="radio" name="birthDateResult" value="Pile à la date prévue" />
+              <span>Pile à la date prévue</span>
+            </label>
 
-          <div>
-            <label for="weightResult">Poids officiel</label>
-            <input
-              type="text"
-              id="weightResult"
-              name="weightResult"
-              placeholder="Ex : 3,250 kg"
-            />
+            <label class="mini-odd">
+              <input type="radio" name="birthDateResult" value="Après terme" />
+              <span>Après terme</span>
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label for="heightResult">Taille officielle</label>
-            <input
-              type="text"
-              id="heightResult"
-              name="heightResult"
-              placeholder="Ex : 50 cm"
-            />
+        <div class="admin-market">
+          <h3>Poids</h3>
+          <div class="admin-options">
+            <label class="mini-odd">
+              <input type="radio" name="weightResult" value="Moins de 3 kg" />
+              <span>Moins de 3 kg</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="weightResult" value="Entre 3 kg et 3,5 kg" />
+              <span>Entre 3 kg et 3,5 kg</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="weightResult" value="Plus de 3,5 kg" />
+              <span>Plus de 3,5 kg</span>
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label for="eyeColorResult">Couleur des yeux</label>
-            <select id="eyeColorResult" name="eyeColorResult">
-              <option value="">Choisir</option>
-              <option>Bleus</option>
-              <option>Verts</option>
-              <option>Marrons</option>
-              <option>Gris</option>
-              <option>Autre</option>
-            </select>
+        <div class="admin-market">
+          <h3>Taille</h3>
+          <div class="admin-options">
+            <label class="mini-odd">
+              <input type="radio" name="heightResult" value="Moins de 48 cm" />
+              <span>Moins de 48 cm</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="heightResult" value="Entre 48 et 51 cm" />
+              <span>Entre 48 et 51 cm</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="heightResult" value="Plus de 51 cm" />
+              <span>Plus de 51 cm</span>
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label for="hairResult">Cheveux</label>
-            <select id="hairResult" name="hairResult">
-              <option value="">Choisir</option>
-              <option>Oui</option>
-              <option>Non</option>
-              <option>Trois poils et beaucoup d’espoir</option>
-            </select>
+        <div class="admin-market">
+          <h3>Couleur des yeux</h3>
+          <div class="admin-options">
+            <label class="mini-odd">
+              <input type="radio" name="eyeColorResult" value="Bleus" />
+              <span>Bleus</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="eyeColorResult" value="Verts" />
+              <span>Verts</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="eyeColorResult" value="Marrons" />
+              <span>Marrons</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="eyeColorResult" value="Gris / Autre" />
+              <span>Gris / Autre</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="admin-market">
+          <h3>Cheveux</h3>
+          <div class="admin-options">
+            <label class="mini-odd">
+              <input type="radio" name="hairResult" value="Non" />
+              <span>Non</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="hairResult" value="Belles boucles de son papa" />
+              <span>Belles boucles de son papa</span>
+            </label>
+
+            <label class="mini-odd">
+              <input type="radio" name="hairResult" value="3 poils sur le caillou" />
+              <span>3 poils sur le caillou</span>
+            </label>
           </div>
         </div>
 
@@ -149,7 +213,7 @@
           placeholder="Champ libre..."
         ></textarea>
 
-        <button class="button button-primary full-width" type="submit">
+        <button class="button button-main full-width" type="submit">
           Valider les résultats finaux
         </button>
 
