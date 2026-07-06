@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Back-office — BabyBet Camille & Bastien</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html">
+      <span class="logo-main">BABY<span>BET</span></span>
+      <span class="logo-sub">Camille & Bastien</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Faire un pari</a>
+      <a href="paris.html">Voir les paris</a>
+      <a href="admin.html">Back-office</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="season">Espace parents</p>
+      <h1>Back-office BabyBet</h1>
+      <p>
+        Camille et Bastien peuvent valider le résultat du reveal en premier,
+        puis compléter les résultats finaux à la naissance.
+      </p>
+    </section>
+
+    <section class="results-grid">
+      <form id="gender-result-form" class="panel">
+        <p class="eyebrow">Étape 1</p>
+        <h2>Valider le sexe</h2>
+        <p class="small-text">
+          À remplir après le reveal de juillet 2026.
+        </p>
+
+        <label for="adminCodeGender">Code parents</label>
+        <input
+          type="password"
+          id="adminCodeGender"
+          name="adminCode"
+          placeholder="Code secret"
+          required
+        />
+
+        <label for="genderResult">Résultat officiel</label>
+        <select id="genderResult" name="genderResult" required>
+          <option value="">Choisir</option>
+          <option>Garçon</option>
+          <option>Fille</option>
+          <option>Non binaire</option>
+        </select>
+
+        <button class="button button-primary full-width" type="submit">
+          Valider le résultat du reveal
+        </button>
+
+        <p id="gender-admin-message" class="message"></p>
+      </form>
+
+      <form id="final-results-form" class="panel">
+        <p class="eyebrow">Étape 2</p>
+        <h2>Valider la naissance</h2>
+        <p class="small-text">
+          À remplir plus tard, après le coup de sifflet final.
+        </p>
+
+        <label for="adminCodeFinal">Code parents</label>
+        <input
+          type="password"
+          id="adminCodeFinal"
+          name="adminCode"
+          placeholder="Code secret"
+          required
+        />
+
+        <div class="fields-grid">
+          <div>
+            <label for="birthDateResult">Date officielle</label>
+            <input type="date" id="birthDateResult" name="birthDateResult" />
+          </div>
+
+          <div>
+            <label for="birthTimeResult">Heure officielle</label>
+            <input type="time" id="birthTimeResult" name="birthTimeResult" />
+          </div>
+
+          <div>
+            <label for="weightResult">Poids officiel</label>
+            <input
+              type="text"
+              id="weightResult"
+              name="weightResult"
+              placeholder="Ex : 3,250 kg"
+            />
+          </div>
+
+          <div>
+            <label for="heightResult">Taille officielle</label>
+            <input
+              type="text"
+              id="heightResult"
+              name="heightResult"
+              placeholder="Ex : 50 cm"
+            />
+          </div>
+
+          <div>
+            <label for="eyeColorResult">Couleur des yeux</label>
+            <select id="eyeColorResult" name="eyeColorResult">
+              <option value="">Choisir</option>
+              <option>Bleus</option>
+              <option>Verts</option>
+              <option>Marrons</option>
+              <option>Gris</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="hairResult">Cheveux</label>
+            <select id="hairResult" name="hairResult">
+              <option value="">Choisir</option>
+              <option>Oui</option>
+              <option>Non</option>
+              <option>Trois poils et beaucoup d’espoir</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="firstNameResult">Prénom officiel</label>
+        <input
+          type="text"
+          id="firstNameResult"
+          name="firstNameResult"
+          placeholder="Prénom officiel"
+        />
+
+        <label for="resemblanceResult">Ressemblance officielle / commentaire</label>
+        <textarea
+          id="resemblanceResult"
+          name="resemblanceResult"
+          rows="3"
+          placeholder="Champ libre..."
+        ></textarea>
+
+        <button class="button button-primary full-width" type="submit">
+          Valider les résultats finaux
+        </button>
+
+        <p id="final-admin-message" class="message"></p>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Résumé actuel</p>
+        <h2>Résultats enregistrés</h2>
+      </div>
+
+      <div id="admin-current-results" class="status-box">
+        Chargement des résultats...
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>BabyBet — Camille & Bastien · Saison 2026-2027</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
