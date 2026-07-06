@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les paris — BabyBet Camille & Bastien</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html">
+      <span class="logo-main">BABY<span>BET</span></span>
+      <span class="logo-sub">Camille & Bastien</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Faire un pari</a>
+      <a href="paris.html">Voir les paris</a>
+      <a href="admin.html">Back-office</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <p class="season">Saison 2026-2027</p>
+      <h1>Les paris des autres</h1>
+      <p>
+        Avant les résultats, tout le monde peut voir les pronostics.
+        Après validation par les parents, le classement se mettra à jour automatiquement.
+      </p>
+    </section>
+
+    <section class="results-grid">
+      <div class="panel">
+        <p class="eyebrow">Résultat reveal</p>
+        <h2>Sexe du bébé</h2>
+        <div id="gender-result-box" class="status-box">
+          En attente du reveal de juillet 2026.
+        </div>
+      </div>
+
+      <div class="panel">
+        <p class="eyebrow">Résultats finaux</p>
+        <h2>Naissance</h2>
+        <div id="final-results-box" class="status-box">
+          En attente du coup de sifflet final.
+        </div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Classement</p>
+        <h2>BabyBet League</h2>
+        <p id="ranking-intro">
+          Le classement apparaîtra vraiment quand les parents auront validé les résultats.
+        </p>
+      </div>
+
+      <div id="ranking-list" class="ranking-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <p class="eyebrow">Tous les tickets</p>
+        <h2>Pronostics enregistrés</h2>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Parieur</th>
+              <th>Sexe</th>
+              <th>Poids</th>
+              <th>Taille</th>
+              <th>Date</th>
+              <th>Heure</th>
+              <th>Yeux</th>
+              <th>Prénom</th>
+              <th>Cheveux</th>
+              <th>Ressemblance</th>
+            </tr>
+          </thead>
+          <tbody id="bets-table-body">
+            <tr>
+              <td colspan="10">Chargement des paris...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>BabyBet — Camille & Bastien · Saison 2026-2027</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
