@@ -10,48 +10,47 @@
 <body>
   <header class="topbar">
     <a class="logo" href="index.html">
+      <span class="ball">⚽</span>
       <span class="logo-main">BABY<span>BET</span></span>
       <span class="logo-sub">Camille & Bastien</span>
     </a>
 
     <nav>
-      <a href="index.html">Faire un pari</a>
-      <a href="paris.html">Voir les paris</a>
-      <a href="admin.html">Back-office</a>
+      <a href="index.html">Accueil</a>
+      <a href="paris.html">Les paris</a>
+      <a href="paris.html">Classement</a>
+      <a href="admin.html">Infos match</a>
+      <a class="nav-cta" href="index.html#pari">Faire mon pronostic</a>
     </nav>
   </header>
 
   <main>
-    <section class="page-hero">
-      <p class="season">Saison 2026-2027</p>
+    <section class="page-hero dark-page">
+      <p class="season dark">Saison 2026-2027</p>
       <h1>Les paris des autres</h1>
       <p>
-        Avant les résultats, tout le monde peut voir les pronostics.
-        Après validation par les parents, le classement se mettra à jour automatiquement.
+        Tous les tickets sont affichés ici. Avant les résultats, chacun peut espionner les pronostics.
+        Après validation par Camille et Bastien, le classement se mettra à jour automatiquement.
       </p>
     </section>
 
-    <section class="results-grid">
-      <div class="panel">
-        <p class="eyebrow">Résultat reveal</p>
-        <h2>Sexe du bébé</h2>
-        <div id="gender-result-box" class="status-box">
-          En attente du reveal de juillet 2026.
-        </div>
+    <section class="scoreboard">
+      <div class="score-card">
+        <p>Reveal du sexe</p>
+        <h2 id="gender-result-title">En attente</h2>
+        <span id="gender-result-box">Résultat prévu en juillet 2026.</span>
       </div>
 
-      <div class="panel">
-        <p class="eyebrow">Résultats finaux</p>
-        <h2>Naissance</h2>
-        <div id="final-results-box" class="status-box">
-          En attente du coup de sifflet final.
-        </div>
+      <div class="score-card">
+        <p>Grand pronostic naissance</p>
+        <h2 id="final-result-title">En attente</h2>
+        <span id="final-results-box">Terme prévu : 31 décembre 2026.</span>
       </div>
     </section>
 
-    <section class="panel">
+    <section class="panel ranking-panel">
       <div class="panel-heading">
-        <p class="eyebrow">Classement</p>
+        <p class="eyebrow">🏆 Classement</p>
         <h2>BabyBet League</h2>
         <p id="ranking-intro">
           Le classement apparaîtra vraiment quand les parents auront validé les résultats.
@@ -63,7 +62,7 @@
 
     <section class="panel">
       <div class="panel-heading">
-        <p class="eyebrow">Tous les tickets</p>
+        <p class="eyebrow">🎟️ Tous les tickets</p>
         <h2>Pronostics enregistrés</h2>
       </div>
 
@@ -76,19 +75,47 @@
               <th>Poids</th>
               <th>Taille</th>
               <th>Date</th>
-              <th>Heure</th>
               <th>Yeux</th>
               <th>Prénom</th>
+              <th>Cheveux</th>
+              <th>ResPrénom</th>
               <th>Cheveux</th>
               <th>Ressemblance</th>
             </tr>
           </thead>
+
           <tbody id="bets-table-body">
             <tr>
-              <td colspan="10">Chargement des paris...</td>
+              <td colspan="9">Chargement des paris...</td>
             </tr>
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section class="bottom-badges">
+      <div>
+        <span>🛡️</span>
+        <strong>Pari sûr</strong>
+        <p>Tout le monde peut encore gagner, surtout avant les résultats.</p>
+      </div>
+
+      <div>
+        <span>⚡</span>
+        <strong>Pari risqué</strong>
+        <p>Les cotes sont belles, mais bébé décidera.</p>
+      </div>
+
+      <div>
+        <span>👑</span>
+        <strong>Pari expert</strong>
+        <p>Le classement ne ment jamais, sauf quand il arrange quelqu’un.</p>
+      </div>
+
+      <div>
+        <span>🏆</span>
+        <strong>Pari légende</strong>
+        <p>Le vainqueur aura officiellement le droit de dire : “je savais”.</p>
       </div>
     </section>
   </main>
