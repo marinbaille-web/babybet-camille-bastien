@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BabyBet — Camille & Bastien</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="logo" href="index.html">
+      <span class="logo-main">BABY<span>BET</span></span>
+      <span class="logo-sub">Camille & Bastien</span>
+    </a>
+
+    <nav>
+      <a href="index.html">Faire un pari</a>
+      <a href="paris.html">Voir les paris</a>
+      <a href="admin.html">Back-office</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="season">Saison 2026-2027</p>
+        <h1>Le match le plus attendu de l’année</h1>
+        <p class="hero-text">
+          Bienvenue sur le BabyBet officiel de Camille & Bastien.
+          Faites vos pronostics, assumez vos cotes, et tentez la gloire familiale.
+        </p>
+        <a class="button button-primary" href="#pari">Faire mon ticket</a>
+      </div>
+
+      <div class="hero-card">
+        <p class="card-label">Prochain match</p>
+        <h2>Reveal du sexe</h2>
+        <p>Juillet 2026</p>
+        <hr>
+        <h2>Coup de sifflet final</h2>
+        <p>Terme prévu : 31 décembre 2026</p>
+      </div>
+    </section>
+
+    <section class="info-strip">
+      <div>
+        <strong>2 compétitions</strong>
+        <span>Reveal + naissance</span>
+      </div>
+      <div>
+        <strong>Cotes exclusives</strong>
+        <span>Validées par la mauvaise foi familiale</span>
+      </div>
+      <div>
+        <strong>Classement</strong>
+        <span>Mis à jour après les résultats</span>
+      </div>
+    </section>
+
+    <section id="pari" class="layout">
+      <form id="bet-form" class="panel form-panel">
+        <div class="panel-heading">
+          <p class="eyebrow">Ticket de pari</p>
+          <h2>Faites vos pronostics</h2>
+          <p>
+            Le sexe sera révélé en juillet 2026. Le reste sera validé à la naissance.
+          </p>
+        </div>
+
+        <div class="form-section">
+          <h3>1. Parieur</h3>
+
+          <label for="bettorName">Votre nom ou pseudo *</label>
+          <input
+            type="text"
+            id="bettorName"
+            name="bettorName"
+            placeholder="Ex : Mamie, Tonton Max, Laura..."
+            required
+          />
+        </div>
+
+        <div class="form-section">
+          <div class="section-title">
+            <h3>2. Pari reveal du sexe</h3>
+            <span>Résultat en juillet 2026</span>
+          </div>
+
+          <div class="odds-grid">
+            <label class="odd-card">
+              <input type="radio" name="gender" value="Garçon" required />
+              <span class="odd-name">Garçon</span>
+              <span class="odd-value">1.85</span>
+            </label>
+
+            <label class="odd-card">
+              <input type="radio" name="gender" value="Fille" required />
+              <span class="odd-name">Fille</span>
+              <span class="odd-value">1.85</span>
+            </label>
+
+            <label class="odd-card">
+              <input type="radio" name="gender" value="Non binaire" required />
+              <span class="odd-name">Non binaire</span>
+              <small>(petite chèvre)</small>
+              <span class="odd-value">12.00</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="section-title">
+            <h3>3. Grand pronostic naissance</h3>
+            <span>Terme prévu : 31 décembre 2026</span>
+          </div>
+
+          <div class="fields-grid">
+            <div>
+              <label for="weight">Poids estimé</label>
+              <input
+                type="text"
+                id="weight"
+                name="weight"
+                placeholder="Ex : 3,250 kg"
+              />
+            </div>
+
+            <div>
+              <label for="height">Taille estimée</label>
+              <input
+                type="text"
+                id="height"
+                name="height"
+                placeholder="Ex : 50 cm"
+              />
+            </div>
+
+            <div>
+              <label for="birthDate">Date de naissance</label>
+              <input type="date" id="birthDate" name="birthDate" />
+            </div>
+
+            <div>
+              <label for="birthTime">Heure de naissance</label>
+              <input type="time" id="birthTime" name="birthTime" />
+            </div>
+
+            <div>
+              <label for="eyeColor">Couleur des yeux</label>
+              <select id="eyeColor" name="eyeColor">
+                <option value="">Choisir</option>
+                <option>Bleus</option>
+                <option>Verts</option>
+                <option>Marrons</option>
+                <option>Gris</option>
+                <option>Autre</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="hair">Cheveux</label>
+              <select id="hair" name="hair">
+                <option value="">Choisir</option>
+                <option>Oui</option>
+                <option>Non</option>
+                <option>Trois poils et beaucoup d’espoir</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="firstNameGuess">Prénom deviné</label>
+          <input
+            type="text"
+            id="firstNameGuess"
+            name="firstNameGuess"
+            placeholder="Votre pronostic prénom..."
+          />
+
+          <label for="resemblance">Ressemblance</label>
+          <textarea
+            id="resemblance"
+            name="resemblance"
+            rows="3"
+            placeholder="Champ libre..."
+          ></textarea>
+        </div>
+
+        <button class="button button-primary full-width" type="submit">
+          Valider mon ticket de pari
+        </button>
+
+        <p id="form-message" class="message"></p>
+      </form>
+
+      <aside class="panel ticket-panel">
+        <p class="eyebrow">Votre ticket</p>
+        <h2>Récapitulatif</h2>
+
+        <div class="ticket-line">
+          <span>Parieur</span>
+          <strong id="preview-bettor">-</strong>
+        </div>
+
+        <div class="ticket-line">
+          <span>Sexe</span>
+          <strong id="preview-gender">-</strong>
+        </div>
+
+        <div class="ticket-line">
+          <span>Poids</span>
+          <strong id="preview-weight">-</strong>
+        </div>
+
+        <div class="ticket-line">
+          <span>Taille</span>
+          <strong id="preview-height">-</strong>
+        </div>
+
+        <div class="ticket-line">
+          <span>Date</span>
+          <strong id="preview-date">-</strong>
+        </div>
+
+        <div class="ticket-line">
+          <span>Yeux</span>
+          <strong id="preview-eyes">-</strong>
+        </div>
+
+        <div class="ticket-box">
+          <strong>Cote boostée</strong>
+          <p>Pari enregistré sous réserve de mauvaise foi familiale.</p>
+        </div>
+
+        <a class="button button-secondary full-width" href="paris.html">
+          Voir les paris des autres
+        </a>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <p>BabyBet — Camille & Bastien · Saison 2026-2027</p>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
