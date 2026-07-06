@@ -1,5 +1,39 @@
 const API_URL = window.BABYBET_CONFIG && window.BABYBET_CONFIG.API_URL;
 
+const ODDS = {
+  gender: {
+    "Garçon": 1.85,
+    "Fille": 1.85,
+    "Non binaire": 12.0
+  },
+  weight: {
+    "Moins de 3 kg": 3.2,
+    "Entre 3 kg et 3,5 kg": 1.9,
+    "Plus de 3,5 kg": 2.4
+  },
+  height: {
+    "Moins de 48 cm": 4.0,
+    "Entre 48 et 51 cm": 1.75,
+    "Plus de 51 cm": 2.8
+  },
+  eyeColor: {
+    "Bleus": 2.1,
+    "Verts": 3.4,
+    "Marrons": 1.6,
+    "Gris / Autre": 8.0
+  },
+  birthDate: {
+    "Avant terme": 3.0,
+    "Pile à la date prévue": 2.0,
+    "Après terme": 2.5
+  },
+  hair: {
+    "Non": 2.4,
+    "Belles boucles de son papa": 1.8,
+    "3 poils sur le caillou": 5.0
+  }
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   initBetForm();
   initParisPage();
@@ -13,7 +47,8 @@ function callApi(params) {
       return;
     }
 
-    const callbackName = "babybetCallback_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+    const callbackName =
+      "babybetCallback_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
 
     params.callback = callbackName;
 
@@ -24,6 +59,7 @@ function callApi(params) {
       .join("&");
 
     const script = document.createElement("script");
+
     const timeout = setTimeout(function () {
       cleanup();
       reject(new Error("Temps de réponse dépassé. Réessaie."));
@@ -31,6 +67,7 @@ function callApi(params) {
 
     window[callbackName] = function (data) {
       cleanup();
+
       if (data && data.ok) {
         resolve(data);
       } else {
@@ -41,12 +78,14 @@ function callApi(params) {
     function cleanup() {
       clearTimeout(timeout);
       delete window[callbackName];
+
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
     }
 
     script.src = API_URL + "?" + query;
+
     script.onerror = function () {
       cleanup();
       reject(new Error("Impossible de contacter Google Sheets."));
@@ -55,6 +94,10 @@ function callApi(params) {
     document.body.appendChild(script);
   });
 }
+
+/* ----------------------------- */
+/* PAGE INDEX — FORMULAIRE PARI */
+/* ----------------------------- */
 
 function initBetForm() {
   const form = document.getElementById("bet-form");
@@ -81,7 +124,7 @@ function initBetForm() {
       weight: data.weight,
       height: data.height,
       birthDate: data.birthDate,
-      birthTime: data.birthTime,
+      birthTime: "",
       eyeColor: data.eyeColor,
       firstNameGuess: data.firstNameGuess,
       hair: data.hair,
@@ -122,9 +165,31 @@ function updateTicketPreview() {
   setText("preview-gender", data.gender || "-");
   setText("preview-weight", data.weight || "-");
   setText("preview-height", data.height || "-");
-  setText("preview-date", formatDate(data.birthDate) || "-");
+  setText("preview-date", data.birthDate || "-");
   setText("preview-eyes", data.eyeColor || "-");
+  setText("preview-hair", data.hair || "-");
+
+  const totalOdds = calculateTotalOdds(data);
+  setText("preview-total-odds", totalOdds ? totalOdds.toFixed(2) : "-");
 }
+
+function calculateTotalOdds(data) {
+  let total = 1;
+  let hasOdd = false;
+
+  ["gender", "weight", "height", "eyeColor", "birthDate", "hair"].forEach(function (key) {
+    if (data[key] && ODDS[key] && ODDS[key][data[key]]) {
+      total *= ODDS[key][data[key]];
+      hasOdd = true;
+    }
+  });
+
+  return hasOdd ? total : null;
+}
+
+/* ----------------------------- */
+/* PAGE PARIS — RÉSULTATS */
+/* ----------------------------- */
 
 function initParisPage() {
   const tableBody = document.getElementById("bets-table-body");
@@ -142,32 +207,36 @@ function initParisPage() {
     .catch(function (error) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="10">${escapeHtml(error.message)}</td>
+          <td colspan="9">${escapeHtml(error.message)}</td>
         </tr>
       `;
     });
 }
 
 function renderResults(results) {
+  const genderTitle = document.getElementById("gender-result-title");
   const genderBox = document.getElementById("gender-result-box");
+
+  const finalTitle = document.getElementById("final-result-title");
   const finalBox = document.getElementById("final-results-box");
 
-  if (genderBox) {
+  if (genderTitle && genderBox) {
     if (results.genderResult) {
+      genderTitle.textContent = results.genderResult;
       genderBox.innerHTML = `
-        <strong>Résultat officiel :</strong> ${escapeHtml(results.genderResult)}
+        Résultat officiel validé par Camille & Bastien.
         <br>
         Le premier classement du reveal est ouvert.
       `;
     } else {
-      genderBox.textContent = "En attente du reveal de juillet 2026.";
+      genderTitle.textContent = "En attente";
+      genderBox.textContent = "Résultat prévu en juillet 2026.";
     }
   }
 
-  if (finalBox) {
+  if (finalTitle && finalBox) {
     const hasFinal =
       results.birthDateResult ||
-      results.birthTimeResult ||
       results.weightResult ||
       results.heightResult ||
       results.eyeColorResult ||
@@ -176,13 +245,15 @@ function renderResults(results) {
       results.resemblanceResult;
 
     if (!hasFinal) {
-      finalBox.textContent = "En attente du coup de sifflet final.";
+      finalTitle.textContent = "En attente";
+      finalBox.textContent = "Terme prévu : 31 décembre 2026.";
       return;
     }
 
+    finalTitle.textContent = "Validé";
+
     finalBox.innerHTML = `
-      <strong>Date :</strong> ${escapeHtml(formatDate(results.birthDateResult) || "-")}<br>
-      <strong>Heure :</strong> ${escapeHtml(results.birthTimeResult || "-")}<br>
+      <strong>Date :</strong> ${escapeHtml(results.birthDateResult || "-")}<br>
       <strong>Poids :</strong> ${escapeHtml(results.weightResult || "-")}<br>
       <strong>Taille :</strong> ${escapeHtml(results.heightResult || "-")}<br>
       <strong>Yeux :</strong> ${escapeHtml(results.eyeColorResult || "-")}<br>
@@ -196,6 +267,7 @@ function renderResults(results) {
 function renderRanking(bets, results) {
   const rankingList = document.getElementById("ranking-list");
   const rankingIntro = document.getElementById("ranking-intro");
+
   if (!rankingList) return;
 
   if (!bets.length) {
@@ -208,7 +280,6 @@ function renderRanking(bets, results) {
   const hasAnyResult =
     results.genderResult ||
     results.birthDateResult ||
-    results.birthTimeResult ||
     results.weightResult ||
     results.heightResult ||
     results.eyeColorResult ||
@@ -218,6 +289,7 @@ function renderRanking(bets, results) {
   const ranked = bets
     .map(function (bet) {
       const score = calculateScore(bet, results);
+
       return {
         name: bet.bettorName || "Parieur mystère",
         points: score.points,
@@ -230,13 +302,14 @@ function renderRanking(bets, results) {
 
   if (rankingIntro) {
     rankingIntro.textContent = hasAnyResult
-      ? "Le classement est calculé avec les résultats déjà validés par les parents."
+      ? "Le classement est calculé avec les résultats déjà validés par Camille et Bastien."
       : "Aucun résultat officiel pour le moment : tout le monde est encore en lice.";
   }
 
   rankingList.innerHTML = ranked
     .map(function (item, index) {
       const badge = getBadge(index, item.points, hasAnyResult);
+
       const details = item.details.length
         ? item.details.join(" · ")
         : "En attente des résultats officiels";
@@ -244,10 +317,12 @@ function renderRanking(bets, results) {
       return `
         <div class="ranking-item">
           <div class="rank-number">${index + 1}</div>
+
           <div>
             <div class="rank-name">${escapeHtml(item.name)}</div>
             <div class="rank-details">${escapeHtml(badge)} · ${escapeHtml(details)}</div>
           </div>
+
           <div class="rank-points">${item.points} pts</div>
         </div>
       `;
@@ -264,62 +339,19 @@ function calculateScore(bet, results) {
     details.push("Sexe trouvé");
   }
 
-  if (results.birthDateResult && bet.birthDate) {
-    const diff = dateDiffInDays(bet.birthDate, results.birthDateResult);
-
-    if (diff === 0) {
-      points += 25;
-      details.push("Date exacte");
-    } else if (diff !== null && diff <= 3) {
-      points += 10;
-      details.push("Date proche");
-    }
+  if (results.birthDateResult && sameText(bet.birthDate, results.birthDateResult)) {
+    points += 15;
+    details.push("Date trouvée");
   }
 
-  if (results.birthTimeResult && bet.birthTime) {
-    const diffMinutes = timeDiffInMinutes(bet.birthTime, results.birthTimeResult);
-
-    if (diffMinutes === 0) {
-      points += 15;
-      details.push("Heure exacte");
-    } else if (diffMinutes !== null && diffMinutes <= 60) {
-      points += 8;
-      details.push("Heure proche");
-    }
+  if (results.weightResult && sameText(bet.weight, results.weightResult)) {
+    points += 15;
+    details.push("Poids trouvé");
   }
 
-  if (results.weightResult && bet.weight) {
-    const betWeight = parseNumber(bet.weight);
-    const resultWeight = parseNumber(results.weightResult);
-
-    if (betWeight !== null && resultWeight !== null) {
-      const diff = Math.abs(betWeight - resultWeight);
-
-      if (diff <= 0.05) {
-        points += 15;
-        details.push("Poids quasi exact");
-      } else if (diff <= 0.2) {
-        points += 8;
-        details.push("Poids proche");
-      }
-    }
-  }
-
-  if (results.heightResult && bet.height) {
-    const betHeight = parseNumber(bet.height);
-    const resultHeight = parseNumber(results.heightResult);
-
-    if (betHeight !== null && resultHeight !== null) {
-      const diff = Math.abs(betHeight - resultHeight);
-
-      if (diff <= 1) {
-        points += 10;
-        details.push("Taille proche");
-      } else if (diff <= 3) {
-        points += 5;
-        details.push("Taille pas loin");
-      }
-    }
+  if (results.heightResult && sameText(bet.height, results.heightResult)) {
+    points += 10;
+    details.push("Taille trouvée");
   }
 
   if (results.eyeColorResult && sameText(bet.eyeColor, results.eyeColorResult)) {
@@ -333,7 +365,8 @@ function calculateScore(bet, results) {
       details.push("Prénom exact");
     } else if (
       normalizeText(bet.firstNameGuess).charAt(0) &&
-      normalizeText(bet.firstNameGuess).charAt(0) === normalizeText(results.firstNameResult).charAt(0)
+      normalizeText(bet.firstNameGuess).charAt(0) ===
+        normalizeText(results.firstNameResult).charAt(0)
     ) {
       points += 5;
       details.push("Bonne initiale");
@@ -345,7 +378,10 @@ function calculateScore(bet, results) {
     details.push("Cheveux trouvés");
   }
 
-  return { points: points, details: details };
+  return {
+    points: points,
+    details: details
+  };
 }
 
 function renderBetsTable(bets) {
@@ -355,7 +391,7 @@ function renderBetsTable(bets) {
   if (!bets.length) {
     tableBody.innerHTML = `
       <tr>
-        <td colspan="10">Aucun pari enregistré pour le moment.</td>
+        <td colspan="9">Aucun pari enregistré pour le moment.</td>
       </tr>
     `;
     return;
@@ -369,8 +405,7 @@ function renderBetsTable(bets) {
           <td>${escapeHtml(bet.gender || "-")}</td>
           <td>${escapeHtml(bet.weight || "-")}</td>
           <td>${escapeHtml(bet.height || "-")}</td>
-          <td>${escapeHtml(formatDate(bet.birthDate) || "-")}</td>
-          <td>${escapeHtml(bet.birthTime || "-")}</td>
+          <td>${escapeHtml(bet.birthDate || "-")}</td>
           <td>${escapeHtml(bet.eyeColor || "-")}</td>
           <td>${escapeHtml(bet.firstNameGuess || "-")}</td>
           <td>${escapeHtml(bet.hair || "-")}</td>
@@ -380,6 +415,10 @@ function renderBetsTable(bets) {
     })
     .join("");
 }
+
+/* ----------------------------- */
+/* PAGE ADMIN */
+/* ----------------------------- */
 
 function initAdminPage() {
   const genderForm = document.getElementById("gender-result-form");
@@ -433,7 +472,7 @@ function initAdminPage() {
         action: "updateFinalResults",
         adminCode: data.adminCode,
         birthDateResult: data.birthDateResult,
-        birthTimeResult: data.birthTimeResult,
+        birthTimeResult: "",
         weightResult: data.weightResult,
         heightResult: data.heightResult,
         eyeColorResult: data.eyeColorResult,
@@ -465,8 +504,7 @@ function loadAdminCurrentResults() {
 
       box.innerHTML = `
         <strong>Sexe :</strong> ${escapeHtml(results.genderResult || "En attente")}<br>
-        <strong>Date :</strong> ${escapeHtml(formatDate(results.birthDateResult) || "En attente")}<br>
-        <strong>Heure :</strong> ${escapeHtml(results.birthTimeResult || "En attente")}<br>
+        <strong>Date :</strong> ${escapeHtml(results.birthDateResult || "En attente")}<br>
         <strong>Poids :</strong> ${escapeHtml(results.weightResult || "En attente")}<br>
         <strong>Taille :</strong> ${escapeHtml(results.heightResult || "En attente")}<br>
         <strong>Yeux :</strong> ${escapeHtml(results.eyeColorResult || "En attente")}<br>
@@ -479,6 +517,10 @@ function loadAdminCurrentResults() {
       box.textContent = error.message;
     });
 }
+
+/* ----------------------------- */
+/* OUTILS */
+/* ----------------------------- */
 
 function formToObject(form) {
   const data = new FormData(form);
@@ -493,6 +535,7 @@ function formToObject(form) {
 
 function setText(id, value) {
   const element = document.getElementById(id);
+
   if (element) {
     element.textContent = value;
   }
@@ -511,7 +554,7 @@ function setMessage(element, text, type) {
 
 function getBadge(index, points, hasAnyResult) {
   if (!hasAnyResult) return "En attente de la VAR";
-  if (index === 0 && points > 0) return "Champion provisoire";
+  if (index === 0 && points > 0) return "Champion BabyBet provisoire";
   if (points >= 60) return "Légende du pronostic";
   if (points >= 35) return "Très gros flair";
   if (points > 0) return "Encore dans le match";
@@ -528,61 +571,6 @@ function normalizeText(value) {
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
-}
-
-function parseNumber(value) {
-  const cleaned = String(value || "")
-    .replace(",", ".")
-    .replace(/[^\d.]/g, "");
-
-  if (!cleaned) return null;
-
-  const number = Number(cleaned);
-  return Number.isNaN(number) ? null : number;
-}
-
-function dateDiffInDays(dateA, dateB) {
-  const a = new Date(dateA);
-  const b = new Date(dateB);
-
-  if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) {
-    return null;
-  }
-
-  const oneDay = 1000 * 60 * 60 * 24;
-  return Math.round(Math.abs(a - b) / oneDay);
-}
-
-function timeDiffInMinutes(timeA, timeB) {
-  if (!timeA || !timeB) return null;
-
-  const partsA = String(timeA).split(":");
-  const partsB = String(timeB).split(":");
-
-  if (partsA.length < 2 || partsB.length < 2) return null;
-
-  const minutesA = Number(partsA[0]) * 60 + Number(partsA[1]);
-  const minutesB = Number(partsB[0]) * 60 + Number(partsB[1]);
-
-  if (Number.isNaN(minutesA) || Number.isNaN(minutesB)) return null;
-
-  return Math.abs(minutesA - minutesB);
-}
-
-function formatDate(value) {
-  if (!value) return "";
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return date.toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  });
 }
 
 function escapeHtml(value) {
